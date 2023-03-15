@@ -3,14 +3,19 @@ const parts = require('./webpack.parts');
 
 module.exports = merge([
   {
-    entry: ['./src'],
+    entry: './src/index',
     resolve: {
-      extensions: ['.js', '.jsx'],
+      modules: ['node_modules'],
+      extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.less', '.css'],
     },
+    devtool: 'eval-cheap-module-source-map',
+    performance: {
+      hints: false,
+    },
+    stats: 'minimal',
   },
-
-  parts.page({ title: 'Demo' }),
-  parts.extractCss(),
+  parts.page({ title: 'Cli-Demo' }),
   parts.loadJavaScript(),
-  parts.clean(),
+  parts.loadFont(),
+  parts.loadImg(),
 ]);
