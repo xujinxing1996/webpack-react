@@ -1,11 +1,20 @@
 const { merge } = require('webpack-merge');
+const path = require('path');
 const parts = require('./webpack.parts');
+const paths = require('./paths');
+const config = require('./getConfig');
+
+const { publicPath, sourcemap: shouldUseSourceMap } = config;
 
 module.exports = merge([
   {
     output: {
+      path: paths.appBuild,
+      publicPath,
       filename: 'js/[name].[contenthash:8].js',
       chunkFilename: 'js/[name].chunk.[chunkhash:8].js',
+      devtoolModuleFilenameTemplate: (info) =>
+        path.resolve(info.absoluteResourcePath),
     },
     optimization: {
       splitChunks: {
@@ -54,5 +63,7 @@ module.exports = merge([
     },
     plugins: [parts.extractCss().plugin],
   },
-  parts.loadCSS(parts.extractCss().loader),
+  parts.generateSourceMaps(shouldUseSourceMap && 'source-map'),
+  parts.loadCSS(parts.extractCss().loader, true),
+  parts.clean(),
 ]);

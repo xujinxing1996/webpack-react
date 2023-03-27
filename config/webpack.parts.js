@@ -4,6 +4,9 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const clearConsole = require('react-dev-utils/clearConsole');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const chalk = require('chalk');
+const getConfig = require('./getConfig');
+
+const { sourcemap: shouldUseSourceMap } = getConfig;
 
 exports.devServer = () => ({
   port: 8080,
@@ -32,23 +35,31 @@ exports.loadJavaScript = () => ({
   },
 });
 
-exports.loadCSS = (loader = '') => ({
+exports.loadCSS = (loader = '', isProd = false) => ({
   module: {
     rules: [
       {
         test: /\.css$/,
         use: [
           loader,
-          'css-loader',
-          // {
-          //   loader: 'postcss-loader',
-          //   options: {
-          //     sourceMap: true,
-          //     config: {
-          //       path: 'postcss.config.js',
-          //     },
-          //   },
-          // },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: isProd ? shouldUseSourceMap : true,
+              modules: true,
+              importLoaders: 2,
+              localIdentName: '[local]',
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: isProd ? shouldUseSourceMap : true,
+              config: {
+                path: 'postcss.config.js',
+              },
+            },
+          },
           // {
           //   loader: 'less-loader',
           //   options: {
@@ -96,7 +107,13 @@ exports.loadImg = () => ({
 });
 
 exports.page = ({ title }) => ({
-  plugins: [new HtmlWebpackPlugin({ template: './public/index.html', title })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      title,
+      inject: 'body',
+    }),
+  ],
 });
 
 exports.progressBar = () => ({
@@ -127,3 +144,9 @@ exports.errorOverlay = () => ({
 });
 
 exports.generateSourceMaps = ({ type }) => ({ devtool: type });
+
+exports.clean = () => ({
+  output: {
+    clean: true,
+  },
+});

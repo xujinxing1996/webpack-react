@@ -1,20 +1,20 @@
 const { merge } = require('webpack-merge');
 const parts = require('./webpack.parts');
+const paths = require('./paths');
 
 module.exports = merge([
   {
-    entry: './src/index',
+    entry: paths.appIndexJs,
     resolve: {
       modules: ['node_modules'],
       extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.less', '.css'],
     },
-    devtool: 'eval-cheap-module-source-map',
     performance: {
       hints: false,
     },
     stats: 'minimal',
   },
-  parts.page({ title: 'Cli-Demo' }),
+  parts.page({ title: 'cli-demo' }),
   parts.loadJavaScript(),
   parts.loadFont(),
   parts.loadImg(),
