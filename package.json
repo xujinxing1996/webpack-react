@@ -1,5 +1,5 @@
 {
-    "name": "venus-scripts",
+    "name": "jxx-scripts",
     "version": "0.0.1",
     "description": "webpack react",
     "keywords": [
@@ -8,10 +8,10 @@
     ],
     "author": {
         "name": "JX_X",
-        "email": "xujinxing1996@163.com"
+        "email": "venusxu1996@gmail.com"
     },
     "bin": {
-        "venus-scripts": "./bin/venus-scripts.js"
+        "jxx-scripts": "./bin/jxx-scripts.js"
     },
     "files": [
         "bin",

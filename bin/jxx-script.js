@@ -6,7 +6,7 @@ process.on('unhandledRejection', (err) => {
 
 const execa = require('execa');
 
-// node venus-script start => slice(2) => start
+// node jxx-script start => slice(2) => start
 const args = process.argv.slice(2);
 
 const scriptIndex = args.findIndex((arg) => arg === 'build' || arg === 'start');
